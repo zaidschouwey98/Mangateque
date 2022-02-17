@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Mangateque.Models;
+using Microsoft.AspNetCore.Identity;
+using Mangateque.Data;
+using Mangateque.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +16,9 @@ builder.Services.AddDbContext<mangatekContext>(
 // The following three options help with debugging, but should
 // be changed or removed for production.
 );
-
+builder.Services.AddDefaultIdentity<MangatequeUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AuthContext>();builder.Services.AddDbContext<AuthContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("MvcMangaContext"), new MySqlServerVersion(new Version(8, 0, 27))));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -33,7 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
