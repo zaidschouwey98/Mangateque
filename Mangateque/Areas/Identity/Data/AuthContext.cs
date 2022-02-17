@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 ﻿using Mangateque.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+=======
+﻿using Microsoft.AspNetCore.Identity;
+>>>>>>> tmp
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mangateque.Data;
 
+<<<<<<< HEAD
 public class AuthContext : IdentityDbContext<MangatequeUser>
+=======
+public class AuthContext : IdentityDbContext<IdentityUser>
+>>>>>>> tmp
 {
     public AuthContext(DbContextOptions<AuthContext> options)
         : base(options)

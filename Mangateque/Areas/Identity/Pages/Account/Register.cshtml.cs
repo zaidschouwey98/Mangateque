@@ -12,7 +12,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+<<<<<<< HEAD
 using Mangateque.Areas.Identity.Data;
+=======
+>>>>>>> tmp
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,17 +27,30 @@ namespace Mangateque.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+<<<<<<< HEAD
         private readonly SignInManager<MangatequeUser> _signInManager;
         private readonly UserManager<MangatequeUser> _userManager;
         private readonly IUserStore<MangatequeUser> _userStore;
         private readonly IUserEmailStore<MangatequeUser> _emailStore;
+=======
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly IUserEmailStore<IdentityUser> _emailStore;
+>>>>>>> tmp
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
+<<<<<<< HEAD
             UserManager<MangatequeUser> userManager,
             IUserStore<MangatequeUser> userStore,
             SignInManager<MangatequeUser> signInManager,
+=======
+            UserManager<IdentityUser> userManager,
+            IUserStore<IdentityUser> userStore,
+            SignInManager<IdentityUser> signInManager,
+>>>>>>> tmp
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -155,6 +171,7 @@ namespace Mangateque.Areas.Identity.Pages.Account
             return Page();
         }
 
+<<<<<<< HEAD
         private MangatequeUser CreateUser()
         {
             try
@@ -165,17 +182,37 @@ namespace Mangateque.Areas.Identity.Pages.Account
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(MangatequeUser)}'. " +
                     $"Ensure that '{nameof(MangatequeUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+=======
+        private IdentityUser CreateUser()
+        {
+            try
+            {
+                return Activator.CreateInstance<IdentityUser>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
+                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+>>>>>>> tmp
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
+<<<<<<< HEAD
         private IUserEmailStore<MangatequeUser> GetEmailStore()
+=======
+        private IUserEmailStore<IdentityUser> GetEmailStore()
+>>>>>>> tmp
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
+<<<<<<< HEAD
             return (IUserEmailStore<MangatequeUser>)_userStore;
+=======
+            return (IUserEmailStore<IdentityUser>)_userStore;
+>>>>>>> tmp
         }
     }
 }

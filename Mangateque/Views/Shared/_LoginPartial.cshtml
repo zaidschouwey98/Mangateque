@@ -1,8 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
+<<<<<<< HEAD
 @using Mangateque.Areas.Identity.Data
 
 @inject SignInManager<MangatequeUser> SignInManager
 @inject UserManager<MangatequeUser> UserManager
+=======
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+>>>>>>> tmp
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

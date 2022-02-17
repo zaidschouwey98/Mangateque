@@ -5,7 +5,10 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+<<<<<<< HEAD
 using Mangateque.Areas.Identity.Data;
+=======
+>>>>>>> tmp
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,10 +18,17 @@ namespace Mangateque.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {
+<<<<<<< HEAD
         private readonly SignInManager<MangatequeUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
         public LogoutModel(SignInManager<MangatequeUser> signInManager, ILogger<LogoutModel> logger)
+=======
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<LogoutModel> _logger;
+
+        public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
+>>>>>>> tmp
         {
             _signInManager = signInManager;
             _logger = logger;
