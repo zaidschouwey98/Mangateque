@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Mangateque.Models
 {
-    public partial class mangatekContext : DbContext
+    public partial class mangatekContext : IdentityDbContext 
     {
         public mangatekContext()
         {
@@ -33,6 +34,7 @@ namespace Mangateque.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.UseCollation("utf8mb4_bin")
                 .HasCharSet("utf8mb4");
 
