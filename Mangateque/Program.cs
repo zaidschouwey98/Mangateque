@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Mangateque.Models;
+using Microsoft.AspNetCore.Identity;
+using Mangateque.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 
 builder.Services.AddDbContext<mangatekContext>(
     dbContextOptions => dbContextOptions
@@ -14,6 +17,12 @@ builder.Services.AddDbContext<mangatekContext>(
 // be changed or removed for production.
 );
 
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AuthContext>();
+
+builder.Services.AddDbContext<AuthContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("MvcMangaContext"), new MySqlServerVersion(new Version(8, 0, 27))));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -33,11 +42,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();
