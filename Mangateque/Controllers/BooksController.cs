@@ -56,11 +56,14 @@ namespace Mangateque.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Path")] Book book)
+        public async Task<IActionResult> Create([Bind("Name,Path")] Book book)
         {
+            Book _book = new Book();
+            _book.Path = book.Path;
+            _book.Name = book.Name;
             if (ModelState.IsValid)
             {
-                _context.Add(book);
+                _context.Add(_book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
