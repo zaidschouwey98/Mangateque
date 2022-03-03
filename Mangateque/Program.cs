@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Mangateque.Models;
 using Microsoft.AspNetCore.Identity;
 using Mangateque.Data;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,12 @@ builder.Services.AddDbContext<AuthContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 var app = builder.Build();
 
