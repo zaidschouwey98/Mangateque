@@ -58,7 +58,7 @@ namespace Mangateque.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Path,Cover")] Book book,IFormFile image)
+        public async Task<IActionResult> Create([Bind("Name,Cover")] Book book,IFormFile image)
         {
             string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Name);
             // If directory does not exist, create it
@@ -66,16 +66,17 @@ namespace Mangateque.Controllers
             {
                 Directory.CreateDirectory(folderPath);
             }
-            
+            string newName = "cover" + Path.GetExtension(folderPath + @"\" + image.FileName);
             if (image.Length > 0)
             {
-                string filePath = Path.Combine(folderPath, "cover" + Path.GetExtension(folderPath+@"\"+image.FileName));
+                
+                string filePath = Path.Combine(folderPath, newName);
                 using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await image.CopyToAsync(fileStream);
                 }
             }
-            
+            book.Path = @"images\" + book.Name+@"\" + newName;
 
             if (ModelState.IsValid)
             {
