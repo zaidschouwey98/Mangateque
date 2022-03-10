@@ -15,9 +15,11 @@ namespace Mangateque.Controllers
     public class BooksController : Controller
     {
         private readonly mangatekContext _context;
+        private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
 
-        public BooksController(mangatekContext context)
+        public BooksController(IWebHostEnvironment environment, mangatekContext context)
         {
+            _hostingEnvironment = environment;
             _context = context;
         }
 
@@ -56,8 +58,25 @@ namespace Mangateque.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Path")] Book book,[Bind("File")]IFormFile image)
+        public async Task<IActionResult> Create([Bind("Id,Name,Path,Cover")] Book book,IFormFile image)
         {
+            string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Name);
+            // If directory does not exist, create it
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            
+            if (image.Length > 0)
+            {
+                string filePath = Path.Combine(folderPath, "cover" + Path.GetExtension(folderPath+@"\"+image.FileName));
+                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(fileStream);
+                }
+            }
+            
+
             if (ModelState.IsValid)
             {
                 _context.Add(book);
