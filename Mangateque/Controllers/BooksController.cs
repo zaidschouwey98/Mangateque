@@ -36,9 +36,9 @@ namespace Mangateque.Controllers
             {
                 return NotFound();
             }
-
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Book book = await _context.Books
+            .Include(c => c.Chapters)
+            .SingleAsync(c => c.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace Mangateque.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Cover")] Book book,IFormFile image)
         {
-            string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Name);
+            string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Id.ToString());
             // If directory does not exist, create it
             if (!Directory.Exists(folderPath))
             {
@@ -76,7 +76,7 @@ namespace Mangateque.Controllers
                     await image.CopyToAsync(fileStream);
                 }
             }
-            book.Path = @"images\" + book.Name+@"\" + newName;
+            book.Path = @"images\" + book.Id.ToString()+@"\" + newName;
 
             if (ModelState.IsValid)
             {
@@ -93,10 +93,7 @@ namespace Mangateque.Controllers
             if (id == null)
             {
                 return NotFound();
-            }
-
-            //var book = await _context.Books.FindAsync(id);
-            
+            }           
 
             Book book = await _context.Books
             .Include(c => c.Chapters)

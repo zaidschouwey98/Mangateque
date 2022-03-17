@@ -13,9 +13,10 @@ namespace Mangateque.Controllers
     public class ChaptersController : Controller
     {
         private readonly mangatekContext _context;
-
-        public ChaptersController(mangatekContext context)
+        private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
+        public ChaptersController(IWebHostEnvironment environment, mangatekContext context)
         {
+            _hostingEnvironment = environment;
             _context = context;
         }
 
@@ -57,16 +58,31 @@ namespace Mangateque.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Path,NumberOfPage,BookId")] Chapter chapter)
+        public async Task<IActionResult> Create([Bind("NumberOfPage,BookId")] Chapter chapter,int ChapterNumber ,IList<IFormFile> images)
         {
-            if (ModelState.IsValid)
+            string uploads = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", chapter.BookId.ToString() + @"\ch" + ChapterNumber);
+            if (!Directory.Exists(uploads))
             {
-                _context.Add(chapter);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Directory.CreateDirectory(uploads);
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", chapter.BookId);
+            foreach (IFormFile file in images)
+            {
+                if (file.Length > 0)
+                {
+                    string filePath = Path.Combine(uploads, file.FileName);
+                    using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+            }
+            chapter.Path = @"\ch" + ChapterNumber.ToString();
+            
+            _context.Add(chapter);
+            await _context.SaveChangesAsync();
             return View(chapter);
+            
+
         }
 
         // GET: Chapters/Edit/5
