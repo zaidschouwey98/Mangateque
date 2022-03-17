@@ -7,29 +7,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mangateque.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Mangateque.Controllers
 {
-    [Authorize]
-    public class BooksController : Controller
+    public class ChaptersController : Controller
     {
         private readonly mangatekContext _context;
-        private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
 
-        public BooksController(IWebHostEnvironment environment, mangatekContext context)
+        public ChaptersController(mangatekContext context)
         {
-            _hostingEnvironment = environment;
             _context = context;
         }
 
-        // GET: Books
+        // GET: Chapters
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Books.ToListAsync());
+            var mangatekContext = _context.Chapters.Include(c => c.Book);
+            return View(await mangatekContext.ToListAsync());
         }
 
-        // GET: Books/Details/5
+        // GET: Chapters/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,57 +34,42 @@ namespace Mangateque.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
+            var chapter = await _context.Chapters
+                .Include(c => c.Book)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
+            if (chapter == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(chapter);
         }
 
-        // GET: Books/Create
+        // GET: Chapters/Create
         public IActionResult Create()
         {
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id");
             return View();
         }
 
-        // POST: Books/Create
+        // POST: Chapters/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Cover")] Book book,IFormFile image)
+        public async Task<IActionResult> Create([Bind("Id,Path,NumberOfPage,BookId")] Chapter chapter)
         {
-            string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Name);
-            // If directory does not exist, create it
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            string newName = "cover" + Path.GetExtension(folderPath + @"\" + image.FileName);
-            if (image.Length > 0)
-            {
-                
-                string filePath = Path.Combine(folderPath, newName);
-                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await image.CopyToAsync(fileStream);
-                }
-            }
-            book.Path = @"images\" + book.Name+@"\" + newName;
-
             if (ModelState.IsValid)
             {
-                _context.Add(book);
+                _context.Add(chapter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", chapter.BookId);
+            return View(chapter);
         }
 
-        // GET: Books/Edit/5
+        // GET: Chapters/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,28 +77,23 @@ namespace Mangateque.Controllers
                 return NotFound();
             }
 
-            //var book = await _context.Books.FindAsync(id);
-            
-
-            Book book = await _context.Books
-            .Include(c => c.Chapters)
-            .SingleAsync(c => c.Id == id);
-
-            if (book == null)
+            var chapter = await _context.Chapters.FindAsync(id);
+            if (chapter == null)
             {
                 return NotFound();
             }
-            return View(book);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", chapter.BookId);
+            return View(chapter);
         }
 
-        // POST: Books/Edit/5
+        // POST: Chapters/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Path")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Path,NumberOfPage,BookId")] Chapter chapter)
         {
-            if (id != book.Id)
+            if (id != chapter.Id)
             {
                 return NotFound();
             }
@@ -125,12 +102,12 @@ namespace Mangateque.Controllers
             {
                 try
                 {
-                    _context.Update(book);
+                    _context.Update(chapter);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
+                    if (!ChapterExists(chapter.Id))
                     {
                         return NotFound();
                     }
@@ -141,10 +118,11 @@ namespace Mangateque.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", chapter.BookId);
+            return View(chapter);
         }
 
-        // GET: Books/Delete/5
+        // GET: Chapters/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -152,30 +130,31 @@ namespace Mangateque.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
+            var chapter = await _context.Chapters
+                .Include(c => c.Book)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
+            if (chapter == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(chapter);
         }
 
-        // POST: Books/Delete/5
+        // POST: Chapters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            _context.Books.Remove(book);
+            var chapter = await _context.Chapters.FindAsync(id);
+            _context.Chapters.Remove(chapter);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
+        private bool ChapterExists(int id)
         {
-            return _context.Books.Any(e => e.Id == id);
+            return _context.Chapters.Any(e => e.Id == id);
         }
     }
 }
