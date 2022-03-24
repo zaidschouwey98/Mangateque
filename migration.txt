@@ -1,0 +1,4 @@
+Update-Database Migration2 -Context mangatekContext
+Remove-Migration -Context mangatekContext
+Add-Migration AddDateFieldToBook -Context mangatekContext
+Update-Database -Context mangatekContext

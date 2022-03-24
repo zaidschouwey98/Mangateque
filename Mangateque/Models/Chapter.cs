@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mangateque.Models
 {
     public partial class Chapter
     {
+        [Key]
         public int Id { get; set; }
         public string? Path { get; set; }
         public int? NumberOfPage { get; set; }

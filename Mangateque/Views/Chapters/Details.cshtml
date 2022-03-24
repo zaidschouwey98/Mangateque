@@ -10,6 +10,11 @@
     <h4>Chapter</h4>
     <hr />
     <dl class="row">
+        @for (var i = 1; i <= Model.NumberOfPage; i++)
+        {
+            string imageSrc = $@"..\..{@Model.Path}\{@i}.png";
+            <img class="card-img-top" src="@imageSrc">
+        }
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Path)
         </dt>

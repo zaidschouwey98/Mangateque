@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mangateque.Models
 {
@@ -10,6 +12,7 @@ namespace Mangateque.Models
             Books = new HashSet<Book>();
         }
 
+        [Key]
         public int Id { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }

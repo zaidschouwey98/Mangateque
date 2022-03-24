@@ -9,20 +9,40 @@
 <div>
     <h4>Manga</h4>
     <hr />
-    <dl class="row">
+    
+</div>
+<div class="row">
+    <div class="col-md-2">
+    
+           
+            
+            @foreach (var chapter in Model.Chapters)
+            {
+                <div>
+                    <dt class = "col-sm-2">
+                        <a asp-controller="Chapters" asp-action="Details" asp-route-id="@chapter.Id">
+                            <Button>@chapter.Path</Button>
+                        </a>
+                       
+                    </dt>
+                   
+                </div>
+                
+                
+            }
+    </div>
+    <div class="col-md-10">
+        <dl>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Path)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Chapters)
-        </dd>
+       <img class="card-img-top" src="..\..\@Model.Path">
     </dl>
+    </div>
+    
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

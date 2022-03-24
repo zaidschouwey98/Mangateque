@@ -77,7 +77,7 @@ namespace Mangateque.Controllers
                     }
                 }
             }
-            chapter.Path = @"\ch" + ChapterNumber.ToString();
+            chapter.Path = @"images\" + book.Name.ToString() + @"\ch" + ChapterNumber;
             
             _context.Add(chapter);
             await _context.SaveChangesAsync();

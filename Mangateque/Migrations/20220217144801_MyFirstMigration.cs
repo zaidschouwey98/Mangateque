@@ -73,7 +73,7 @@ namespace Mangateque.Migrations
                 name: "books",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int(11)", nullable: false),
+                    id = table.Column<int>(type: "int(11)", nullable: false).Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: true, collation: "utf8mb3_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb3"),
                     path = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true, collation: "utf8mb3_general_ci")
@@ -90,7 +90,7 @@ namespace Mangateque.Migrations
                 name: "roles",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int(11)", nullable: false),
+                    id = table.Column<int>(type: "int(11)", nullable: false).Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true, collation: "utf8mb3_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb3"),
                     slug = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true, collation: "utf8mb3_general_ci")
@@ -256,7 +256,7 @@ namespace Mangateque.Migrations
                 name: "chapters",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int(11)", nullable: false),
+                    id = table.Column<int>(type: "int(11)", nullable: false).Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     path = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true, collation: "utf8mb3_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb3"),
                     numberOfPage = table.Column<int>(type: "int(11)", nullable: true),
@@ -278,7 +278,7 @@ namespace Mangateque.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int(11)", nullable: false),
+                    id = table.Column<int>(type: "int(11)", nullable: false).Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     username = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: true, collation: "utf8mb3_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb3"),
                     password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true, collation: "utf8mb3_general_ci")

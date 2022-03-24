@@ -60,6 +60,11 @@ namespace Mangateque.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Cover")] Book book,IFormFile image)
         {
+            if(image == null)
+            {
+                ModelState.AddModelError("", "Vous devez ajouter une image de couverture.");
+                return View();
+            }
             if (!ModelState.IsValid)
             {
                 return View("Index");
