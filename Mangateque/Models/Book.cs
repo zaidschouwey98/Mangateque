@@ -14,6 +14,10 @@ namespace Mangateque.Models
         }
 
         public int Id { get; set; }
+
+        [Required]
+        [MinLength(3)]
+        [MaxLength(255)]
         public string? Name { get; set; }
         public string? Path { get; set; }
 

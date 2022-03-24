@@ -60,7 +60,11 @@ namespace Mangateque.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Cover")] Book book,IFormFile image)
         {
-            string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Id.ToString());
+            if (!ModelState.IsValid)
+            {
+                return View("Index");
+            }
+            string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Name.ToString());
             // If directory does not exist, create it
             if (!Directory.Exists(folderPath))
             {
@@ -76,7 +80,7 @@ namespace Mangateque.Controllers
                     await image.CopyToAsync(fileStream);
                 }
             }
-            book.Path = @"images\" + book.Id.ToString()+@"\" + newName;
+            book.Path = @"images\" + book.Name.ToString()+@"\" + newName;
 
             if (ModelState.IsValid)
             {

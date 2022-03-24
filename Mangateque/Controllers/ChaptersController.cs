@@ -60,7 +60,8 @@ namespace Mangateque.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("NumberOfPage,BookId")] Chapter chapter,int ChapterNumber ,IList<IFormFile> images)
         {
-            string uploads = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", chapter.BookId.ToString() + @"\ch" + ChapterNumber);
+            Book book = await _context.Books.SingleAsync(c => c.Id == chapter.BookId);
+            string uploads = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Name.ToString() + @"\ch" + ChapterNumber);
             if (!Directory.Exists(uploads))
             {
                 Directory.CreateDirectory(uploads);
