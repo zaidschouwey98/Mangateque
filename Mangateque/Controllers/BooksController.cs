@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,6 +61,7 @@ namespace Mangateque.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Cover")] Book book,IFormFile image)
         {
+
             if(image == null)
             {
                 ModelState.AddModelError("", "Vous devez ajouter une image de couverture.");
