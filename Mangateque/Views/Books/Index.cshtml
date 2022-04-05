@@ -4,17 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Les manga</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Ajouter un livre</a>
 </p>
-<div class="row">
+<div class="row pt-1 d-flex text-center">
 @foreach (var item in Model) {
-    <div class="col-4">
+    <div class="col-3 pt-5">
     <div class="card" style="width: 18rem;">
         <a asp-action="Details" asp-route-id="@item.Id">
-      <img class="card-img-top" src="@item.Path" alt="Card image cap">
+      <img class="card-img-top" src="@item.Path" alt="Card image cap" height="300px">
       <div class="card-body">
         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
       </div>
