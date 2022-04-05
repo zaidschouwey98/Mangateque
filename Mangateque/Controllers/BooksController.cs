@@ -59,17 +59,13 @@ namespace Mangateque.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Cover")] Book book,IFormFile image)
+        public async Task<IActionResult> Create([Bind("Name,Path,Cover")] Book book,IFormFile image)
         {
 
             if(image == null)
             {
                 ModelState.AddModelError("", "Vous devez ajouter une image de couverture.");
                 return View();
-            }
-            if (!ModelState.IsValid)
-            {
-                return View("Index");
             }
             string folderPath = Path.Combine(_hostingEnvironment.WebRootPath, @"images\", book.Name.ToString());
             // If directory does not exist, create it
@@ -89,12 +85,11 @@ namespace Mangateque.Controllers
             }
             book.Path = @"images\" + book.Name.ToString()+@"\" + newName;
 
-            if (ModelState.IsValid)
-            {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+       
+            _context.Add(book);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            
             return View(book);
         }
 
