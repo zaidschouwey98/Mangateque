@@ -81,7 +81,7 @@ namespace Mangateque.Controllers
             
             _context.Add(chapter);
             await _context.SaveChangesAsync();
-            return View(chapter);
+            return RedirectToAction("Index", "Books");
             
 
         }

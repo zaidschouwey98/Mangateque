@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edition de manga</h1>
 
-<h4>Book</h4>
+<h4>Manga</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,26 +24,8 @@
         </form>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4">
-    
-           
-            
-            @foreach (var chapter in Model.Chapters)
-            {
-                <div>
-                    <dt class = "col-sm-2">
-                        <label asp-for="@chapter.Path" class="control-label"> @chapter.Path</label>
-                    </dt>
-                   
-                </div>
-                
-                
-            }
-  
-   
-    </div>
-</div>
+<h4>Ajout de chapitre</h4>
+<hr />
 <div class="row">
     <div class="col-md-12">
         <form asp-controller="Chapters" asp-action="Create" enctype="multipart/form-data">
